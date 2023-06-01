@@ -24,6 +24,203 @@ describe('exchange rates', () => {
     });
   });
 
+  it('1. Create an exchange rate without ratio added.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been created
+    cy.get('body').should('contain', 'This form contains errors.');
+  });
+
+  it('2. Create an exchange rate with equals Source and Target currency.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Type ratio to 5
+    cy.get('#sylius_exchange_rate_ratio').type('5');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been created
+    cy.get('body').should('contain', 'This form contains errors.');
+  });
+
+  it('3. Create an exchange rate with negative ratio.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to -5
+    cy.get('#sylius_exchange_rate_ratio').type('-5');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been created
+    cy.get('body').should('contain', 'This form contains errors.');
+  });
+
+  it('4. Create an exchange rate with ratio equals zero.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 0
+    cy.get('#sylius_exchange_rate_ratio').type('0');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been created
+    cy.get('body').should('contain', 'This form contains errors.');
+  });
+
+  it('5. Create a valid exchange rate.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has been created
+    cy.get('body').should('contain', 'Exchange rate has been successfully created.');
+  });
+
+  it('6. Add input values and click in "Cancel".', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on Cancel button
+    cy.get('a[class^="ui button"]').scrollIntoView().click();
+
+    // Verify some exchange rate existence
+    cy.get('div[class^="sylius-grid-wrapper"]').should(($children) => {
+      let content = $children[0].children[1].children[1].children[1].textContent;
+
+      expect(content).to.be.equals('There are no results to display');
+    });
+  });
+
+  it('7. Create a new exchange rate equal a existent yet.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has been created
+    cy.get('body').should('contain', 'Exchange rate has been successfully created.');
+
+    // Create a other one
+
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been created
+    cy.get('body').should('contain', 'This form contains errors.');
+  });
+
+  it('8. Create a new exchange rate equal a existent yet, but with inversal order of Source and Target.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has been created
+    cy.get('body').should('contain', 'Exchange rate has been successfully created.');
+
+    // Create a other one
+
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_targetCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been created
+    cy.get('body').should('contain', 'This form contains errors.');
+  });
 
   it('test case 09: Verify Filter list with existents exchange rates', () => {
     cy.addExchangeRate('EUR', 'CNY', 1);
@@ -143,6 +340,167 @@ describe('exchange rates', () => {
 
   });
 
+  it('13. Edit the ratio of an existent exchange rate.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has been created
+    cy.get('body').should('contain', 'Exchange rate has been successfully created.');
+
+    // Edit
+
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on edit button
+    cy.get('a[class^="ui labeled icon button "]').eq(1).click();
+
+    // Type ratio to 5
+    cy.get('#sylius_exchange_rate_ratio').clear().type('5');
+
+    // Click on save changes button
+    cy.get('button[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been created
+    cy.get('body').should('contain', 'Exchange rate has been successfully updated.');
+
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // // Assert that exchange rate has been edited
+    cy.get('table[class^="ui sortable stackable very basic celled table"]').should(($children) => {
+      let content = $children[0].children[1].children[0].children[3].textContent;
+
+      expect(content).to.be.equals('5');
+    });
+  });
+
+  it('14. Edit the ratio of an existent exchange rate with negative ratio.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has been created
+    cy.get('body').should('contain', 'Exchange rate has been successfully created.');
+
+    // Edit
+
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on edit button
+    cy.get('a[class^="ui labeled icon button "]').eq(1).click();
+
+    // Type ratio to -5
+    cy.get('#sylius_exchange_rate_ratio').clear().type('-5');
+
+    // Click on save changes button
+    cy.get('button[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been edited
+    cy.get('body').should('contain', 'This form contains errors.');
+  });
+
+  it('15. Edit the ratio of an existent exchange rate with ratio equals zero.', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has been created
+    cy.get('body').should('contain', 'Exchange rate has been successfully created.');
+
+    // Edit
+
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on edit button
+    cy.get('a[class^="ui labeled icon button "]').eq(1).click();
+
+    // Type ratio to 0
+    cy.get('#sylius_exchange_rate_ratio').clear().type('0');
+
+    // Click on save changes button
+    cy.get('button[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been edited
+    cy.get('body').should('contain', 'This form contains errors.');
+  });
+
+  it.only('16. Edit the ratio of an existent exchange rate and click in "Cancel".', () => {
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon button  primary "]').click();
+
+    // Select US Dollar Source currency
+    cy.get('#sylius_exchange_rate_sourceCurrency').select('USD');
+
+    // Type ratio to 10
+    cy.get('#sylius_exchange_rate_ratio').type('10');
+
+    // Click on create button
+    cy.get('*[class^="ui labeled icon primary button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has been created
+    cy.get('body').should('contain', 'Exchange rate has been successfully created.');
+
+    // Edit
+
+    // Click in exchange rates in side menu
+    cy.clickInFirst('a[href="/admin/exchange-rates/"]');
+
+    // Click on edit button
+    cy.get('a[class^="ui labeled icon button "]').eq(1).click();
+
+    // Type ratio to 5
+    cy.get('#sylius_exchange_rate_ratio').clear().type('5');
+
+    // Click on Cancel button
+    cy.get('a[class^="ui button"]').scrollIntoView().click();
+
+    // Assert that exchange rate has not been edited
+    cy.get('table[class^="ui sortable stackable very basic celled table"]').should(($children) => {
+      let content = $children[0].children[1].children[0].children[3].textContent;
+
+      expect(content).to.be.equals('10');
+    });
+  });
 
   it('test case 17: Delete one exchange rates using its specific button', () => {
     cy.addExchangeRate('EUR', 'CNY', 1);
