@@ -593,7 +593,7 @@ describe('exchange rates', () => {
         let ratio1 = $children[index].children[3].textContent;
         let ratio2 = $children[index+1].children[3].textContent;
 
-        if (parseInt(ratio1) < parseInt(ratio2)) {
+        if (parseFloat(ratio1) < parseFloat(ratio2)) {
           descending = false;
           break;
         }
@@ -622,7 +622,7 @@ describe('exchange rates', () => {
         let ratio1 = $children[index].children[3].textContent;
         let ratio2 = $children[index+1].children[3].textContent;
 
-        if (parseInt(ratio1) > parseInt(ratio2)) {
+        if (parseFloat(ratio1) > parseFloat(ratio2)) {
           ascending = false;
           break;
         }
